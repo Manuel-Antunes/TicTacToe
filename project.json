@@ -1,0 +1,8 @@
+{
+  "engine": "cocos-creator-js",
+  "packages": "packages",
+  "name": "TicTacToe",
+  "id": "0fd69312-ba45-4506-a826-c9d929b6efdb",
+  "version": "2.4.7",
+  "isNew": false
+}
