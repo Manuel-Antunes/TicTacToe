@@ -18,6 +18,9 @@ export default class TicTacToe extends cc.Component {
   @property(cc.Node)
   oldAnchor: cc.Node = null;
 
+  @property(cc.Prefab)
+  buttonPrefab: cc.Prefab = null;
+
   // LIFE-CYCLE CALLBACKS:
   readonly width = 3;
   readonly height = 3;
@@ -28,24 +31,32 @@ export default class TicTacToe extends cc.Component {
   oPoints: number;
 
   onLoad() {
-    const buttonNodes = this.node.children;
     this.buildButtonList();
-    buttonNodes.forEach(b => {
-      const nomeSeparado = b.name.split("-");
-      const x = parseInt(nomeSeparado[0]);
-      const y = parseInt(nomeSeparado[1]);
-      this.buttons[x][y] = b;
-    });
     this.xPoints = 0;
     this.oPoints = 0;
     this.turn = TicTacToeSubjects.X;
     this.winner = TicTacToeSubjects.NOT_OVERED;
   }
-
   buildButtonList() {
     this.buttons = [];
     for (let i = 0; i < 3; i++) {
       this.buttons.push([]);
+    }
+
+    for (let i = 0; i < this.width; i++) {
+      for (let j = 0; j < this.width; j++) {
+        const button = cc.instantiate(this.buttonPrefab);
+        button.x = 80 - i * 80;
+        button.y = 80 - j * 80;
+        const handler = new cc.Component.EventHandler();
+        handler.target = this.node;
+        handler.handler = "clickButton";
+        handler.component = "TicTacToe";
+        handler.customEventData = `${i}-${j}`;
+        button.getComponent(cc.Button).clickEvents.push(handler);
+        this.node.addChild(button);
+        this.buttons[i][j] = button;
+      }
     }
   }
 
